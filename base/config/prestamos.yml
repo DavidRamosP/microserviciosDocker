@@ -1,0 +1,5 @@
+propiedad:
+  ejemplo: Hola Default
+
+server:
+  port: 8082
