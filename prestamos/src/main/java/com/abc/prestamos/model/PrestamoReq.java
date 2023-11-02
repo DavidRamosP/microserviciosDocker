@@ -1,11 +1,11 @@
 package com.abc.prestamos.model;
-
 import com.abc.prestamos.entity.Prestamo;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.math.BigDecimal;
 @Getter
 @ToString
 public class PrestamoReq {
