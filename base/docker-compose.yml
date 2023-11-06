@@ -10,14 +10,29 @@ services:
       - "ENCRYPT_KEY=${ENCRYPT_KEY}"
     volumes:
       - ./config:/config
+
+  eureka-service:
+    depends_on:
+      - configuration-service
+    image: davidramosp/eureka-service:0.0.1-SNAPSHOT
+    ports:
+      - "8761:8761"
+    restart: always
+    environment:
+      - "SPRING_CLOUD_CONFIG_URI=http://configuration-service:8888"
+
   clientes:
+    depends_on:
+      - eureka-service
     image: davidramosp/clientes:0.0.1-SNAPSHOT
     ports:
       - "8081:8081"
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"
+      - "SPRING_PROFILES_ACTIVE=default"
       - "SPRING_CLOUD_CONFIG_URI=http://configuration-service:8888"
   prestamos:
+    depends_on:
+      - clientes
     image: davidramosp/prestamos:0.0.1-SNAPSHOT
     ports:
       - "8082:8082"

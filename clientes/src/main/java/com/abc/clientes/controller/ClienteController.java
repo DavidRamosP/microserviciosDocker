@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.abc.clientes.properties.PropertiesConfig;
 
 import java.util.List;
 
@@ -20,7 +21,8 @@ public class ClienteController {
 
   @Autowired
   ClienteService clienteService;
-
+  @Autowired
+  PropertiesConfig propConfig;
   @PostMapping
   public Integer create(@Valid @RequestBody ClienteReq clienteReq, BindingResult result) {
     logger.debug("Creando un Cliente {}", clienteReq);
@@ -51,6 +53,23 @@ public class ClienteController {
   @GetMapping("/{codCliente}")
   public ClienteDto getDtoById(@PathVariable Integer codCliente) {
     logger.debug("Obteniendo Cliente con codCliente {}", codCliente);
+
+    // Simulacion de Falla
+    double valor = Math.random() * 100;
+    logger.warn("Tasa de errores configurado {} ", propConfig.getTasaErrores());
+    if (valor < propConfig.getTasaErrores()) {
+      logger.error("Error al obtener Cliente {} ", codCliente);
+      throw new RuntimeException("Error al Obtener cliente");
+    }
+//    if (valor > propConfig.getTasaErrores()){
+//     try {
+//       logger.warn("Tiempo de espera excedido");
+//       Thread.sleep(15000);
+//       return clienteService.getDtoById(codCliente);
+//     } catch (InterruptedException e) {
+//         throw new RuntimeException(e);
+//     }
+//    }
     return clienteService.getDtoById(codCliente);
   }
 
