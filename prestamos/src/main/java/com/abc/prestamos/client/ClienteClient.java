@@ -1,5 +1,6 @@
 package com.abc.prestamos.client;
 
+import com.abc.prestamos.context.ContextInterceptor;
 import io.github.resilience4j.bulkhead.BulkheadFullException;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
-@FeignClient(value = "clientes")
+@FeignClient(value = "clientes", configuration = ContextInterceptor.class)
 public interface ClienteClient {
   Logger logger = LoggerFactory.getLogger(ClienteClient.class);
   @RequestMapping(
