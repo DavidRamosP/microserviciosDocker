@@ -47,4 +47,6 @@ public class PrestamoController {
     logger.debug("id-correlativo por David Ramos: {}", ContextHolder.getContext().getIdCorrelativo());
     return prestamoService.getDtoById(nroPrestamo);
   }
+
+
 }

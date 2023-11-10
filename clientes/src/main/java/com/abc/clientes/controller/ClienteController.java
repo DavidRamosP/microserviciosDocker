@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.abc.clientes.properties.PropertiesConfig;
@@ -76,4 +78,13 @@ public class ClienteController {
     return clienteService.getDtoById(codCliente);
   }
 
+  @DeleteMapping("/{codCliente}")
+  @PreAuthorize("hasRole('ADMIN')")
+  public void delete(@PathVariable("codCliente") Integer codCliente) {
+    logger.debug("Eliminar cliente con codCliente {}", codCliente);
+    var auth =  SecurityContextHolder.getContext().getAuthentication();
+    logger.debug("Datos del getPrincipal(): {}", auth.getPrincipal());
+    logger.debug("Datos del getName(): {}", auth.getName());
+    logger.debug("Datos del Authorities {}", auth.getAuthorities());
+  }
 }
